@@ -1,0 +1,23 @@
+```toml
+[project]
+name = "sft-eval"
+version = "0.1.0"
+description = "Evaluation pipeline for SFT models"
+authors = [{ name = "Your Name" }]
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+    "torch",
+    "transformers",
+    "datasets",
+    "evaluate",
+    "huggingface-hub",
+    "scikit-learn",
+    "numpy",
+    "pyyaml",
+    "tqdm",
+]
+
+[tool.uv]
+package = true
