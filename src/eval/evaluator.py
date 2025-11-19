@@ -2,9 +2,7 @@ import json
 from pathlib import Path
 
 from .bertscore_eval import BertScoreEvaluator
-from .exact_match_eval import ExactMatchEvaluator
-from .f1_eval import F1ScoreEvaluator
-from .embedding_similarity_eval import EmbeddingSimilarityEvaluator
+from .llm_judge_evaluator import LLMJudgeEvaluator
 from .format_validity_eval import FormatValidityEvaluator
 
 
@@ -13,10 +11,17 @@ class Evaluator:
         self.config = config
         self.metrics = config["evaluation"]["metrics"]
         self.results_dir = Path(config["paths"]["results_dir"])
+        
+        # Mengambil konfigurasi spesifik Judge LLM dari file config
+        judge_config = self.config.get("llm_judge", {})
 
         self.eval_map = {
             "bertscore": BertScoreEvaluator(),
             "format_validity": FormatValidityEvaluator(),
+            "llm_judge": LLMJudgeEvaluator(
+                judge_model=judge_config.get("model", "gemini-2.5-pro"), 
+                num_workers=judge_config.get("workers", 4)
+            ),
         }
 
     def load_jsonl(self, path):
