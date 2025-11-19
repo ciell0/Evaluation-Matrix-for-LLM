@@ -16,9 +16,6 @@ class Evaluator:
 
         self.eval_map = {
             "bertscore": BertScoreEvaluator(),
-            "exact_match": ExactMatchEvaluator(),
-            "f1": F1ScoreEvaluator(),
-            "embedding_similarity": EmbeddingSimilarityEvaluator(),
             "format_validity": FormatValidityEvaluator(),
         }
 
