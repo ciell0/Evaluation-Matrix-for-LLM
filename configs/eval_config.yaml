@@ -1,0 +1,22 @@
+# Evaluation configuration file
+
+evaluation:
+  metrics:
+    - bertscore
+    - exact_match
+    - f1
+    - embedding_similarity
+    - format_validity
+
+  batch_size: 8
+  num_workers: 2
+
+paths:
+  predictions: "data/predictions.jsonl"
+  references: "data/test.jsonl"
+  results_dir: "results/"
+
+logging:
+  level: "INFO"
+  save_log: true
+  log_path: "results/eval.log"
