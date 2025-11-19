@@ -3,9 +3,7 @@
 evaluation:
   metrics:
     - bertscore
-    - exact_match
-    - f1
-    - embedding_similarity
+    - llm_judge
     - format_validity
 
   batch_size: 8
