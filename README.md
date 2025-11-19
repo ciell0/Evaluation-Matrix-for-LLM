@@ -17,11 +17,8 @@ Mendukung inference, perhitungan berbagai metrik evaluasi, validasi format outpu
 
 Semua metrik dieksekusi melalui modular evaluator:
 
-* **Exact Match (EM)**
-* **Token F1 Score**
-* **ROUGE-L**
 * **BERTScore**
-* **Embedding Similarity**
+* **LLM as a Judge (LLM API Gemini)**
 * **Format Validity / Rule Checking**
 
 Metrik dapat di-*enable/disable* melalui file YAML konfigurasi.
@@ -166,13 +163,17 @@ python -m src.eval.evaluator \
   --output_path results/metrics.json
 ```
 
----
+# **(Opsional) Aktifkan LLM-as-a-Judge**
 
-## **3. Upload ke HuggingFace Hub**
+Simpan API key Gemini di environment variable:
 
-```bash
-bash scripts/upload_to_hf.sh
-```
+export GEMINI_API_KEY="xxxx"
+
+Pastikan di eval_config.yaml:
+
+metrics:
+  - bertscore
+  - llm_judge <--
 
 ---
 
