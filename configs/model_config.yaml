@@ -1,0 +1,16 @@
+# Model configuration file
+
+model:
+  name_or_path: "your-username/your-sft-model"
+  tokenizer_path: "your-username/your-sft-model"
+
+generation:
+  max_new_tokens: 256
+  temperature: 0.7
+  top_k: 50
+  top_p: 0.95
+  do_sample: false
+
+device:
+  use_cuda: true
+  cuda_device: 0
