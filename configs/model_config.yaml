@@ -1,8 +1,8 @@
 # Model configuration file
 
 model:
-  name_or_path: "your-username/your-sft-model"
-  tokenizer_path: "your-username/your-sft-model"
+  name_or_path: "your-username/your-sft-model" //soon
+  tokenizer_path: "your-username/your-sft-model" //soon
 
 generation:
   max_new_tokens: 256
