@@ -3,8 +3,6 @@
 **Framework modular untuk melakukan evaluasi model SFT (Supervised Fine-Tuning) secara otomatis**.
 Mendukung inference, perhitungan berbagai metrik evaluasi, validasi format output, dan upload hasil ke HuggingFace Hub.
 
-Framework ini dirancang agar **mudah dipakai, di-extend, dan dipahami** oleh orang lain—termasuk tim riset, QA LLM, atau praktisi MLE/AI Engineer.
-
 ---
 
 # ✨ **Fitur Utama**
