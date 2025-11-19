@@ -75,26 +75,6 @@ your-eval-project/
 └── README.md
 ```
 
----
-
-# 🔧 **Persiapan Lingkungan**
-
-Repo ini menggunakan **Python 3.10+** dan dependency dikelola menggunakan **uv** atau pip.
-
-## 📥 Instalasi menggunakan uv (direkomendasikan)
-
-```bash
-uv sync
-```
-
-## 📥 Instalasi menggunakan pip
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
 # 🔌 **Konfigurasi**
 
 Semua konfigurasi ada dalam folder:
