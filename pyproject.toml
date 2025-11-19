@@ -15,4 +15,5 @@ dependencies = [
     "numpy",
     "pyyaml",
     "tqdm",
+    "google-generativeai>=0.7.0",
 ]
