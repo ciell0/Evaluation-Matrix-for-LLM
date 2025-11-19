@@ -1,20 +1,18 @@
-# Evaluation configuration file
+metrics:
+  - bertscore
+  - format_validity
+  - llm_judge
 
-evaluation:
-  metrics:
-    - bertscore
-    - llm_judge
-    - format_validity
+llm_judge:
+  enabled: true
+  model: "gemini-2.5-pro"  
+  // ini betul ga?
+  scoring_prompt: |
+    You are an expert evaluator. Give a score from 1 to 5 based on:
+    - correctness
+    - helpfulness
+    - completeness
+    - reasoning quality
+    Respond ONLY with the number.
 
-  batch_size: 8
-  num_workers: 2
-
-paths:
-  predictions: "data/predictions.jsonl"
-  references: "data/test.jsonl"
-  results_dir: "results/"
-
-logging:
-  level: "INFO"
-  save_log: true
-  log_path: "results/eval.log"
+  api_key_env: "GEMINI_API_KEY"   # ambil dari environment variable (tutor ada di readme yaw)
