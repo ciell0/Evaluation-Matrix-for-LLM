@@ -1,11 +1,11 @@
 # Model configuration file
 
 model:
-  name_or_path: "your-username/your-sft-model" //soon
-  tokenizer_path: "your-username/your-sft-model" //soon
+  name_or_path: "AITF-Universitas-Brawijaya/Qwen3-1.7B-DI-1.0" //yg ini kah guys?
+  tokenizer_path: "AITF-Universitas-Brawijaya/Qwen3-1.7B-DI-1.0" 
 
 generation:
-  max_new_tokens: 256
+  max_new_tokens: 256 // ini dr gpt, aku gatau harusnya brp jd yaudah mwehehe
   temperature: 0.7
   top_k: 50
   top_p: 0.95
