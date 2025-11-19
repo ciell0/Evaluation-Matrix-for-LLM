@@ -1,0 +1,28 @@
+# This is a minimal placeholder. 
+# The actual uv.lock will be auto-generated via `uv sync`.
+
+version = 1
+
+[[package]]
+name = "torch"
+version = "*"
+
+[[package]]
+name = "transformers"
+version = "*"
+
+[[package]]
+name = "datasets"
+version = "*"
+
+[[package]]
+name = "evaluate"
+version = "*"
+
+[[package]]
+name = "huggingface-hub"
+version = "*"
+
+[[package]]
+name = "pyyaml"
+version = "*"
