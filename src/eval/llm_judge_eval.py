@@ -1,53 +1,64 @@
-import json
-from typing import List, Dict
-from pathlib import Path
-from src.utils.llm_client import call_llm
-from src.utils.logger import get_logger
+# src/eval/llm_judge_eval.py
 
-logger = get_logger("llm-judge")
+import os
+import google.generativeai as genai
+
 
 class LLMJudgeEvaluator:
-    def __init__(self, cfg: Dict):
-        self.cfg = cfg
-        self.prompt_template = cfg.get("prompt_template", "{context}\n\nJudge the answer: {answer}\nScore (0-1):")
-        self.batch_size = cfg.get("batch_size", 8)
+    def __init__(self, config):
+        self.model_name = config["llm_judge"]["model"]
+        self.prompt_template = config["llm_judge"]["scoring_prompt"]
+        
+        api_key_env = config["llm_judge"].get("api_key_env", "GEMINI_API_KEY")
+        api_key = os.getenv(api_key_env)
 
-    def _make_prompt(self, sample: Dict) -> str:
-        context = sample.get("instruction", "") + ("\n" + sample.get("input") if sample.get("input") else "")
-        answer = sample.get("prediction")  # predicted by model
-        return self.prompt_template.format(context=context, answer=answer)
+        if api_key is None:
+            raise ValueError(f"[LLMJudgeEvaluator] Missing API key in environment variable: {api_key_env}")
 
-    def evaluate(self, predictions: List[Dict], references: List[Dict]) -> Dict:
-        results = []
-        cfg_llm = self.cfg.get("llm", {})
-        for i in range(0, len(predictions), self.batch_size):
-            batch = predictions[i:i+self.batch_size]
-            for pred, ref in zip(batch, references[i:i+self.batch_size]):
-                prompt = self._make_prompt({**pred, **ref})
-                try:
-                    resp = call_llm(prompt, cfg_llm)
-                    # parse according to provider response format
-                    text = resp.get("text") or resp.get("output") or json.dumps(resp)
-                    # naive parse: try extract numeric score
-                    score = self._parse_score(text)
-                    results.append({"id": pred.get("id"), "score": score, "raw": text})
-                except Exception as e:
-                    logger.error("LLM judge call failed: %s", e)
-                    results.append({"id": pred.get("id"), "score": None, "error": str(e)})
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel(self.model_name)
 
-        # aggregate
-        scores = [r["score"] for r in results if r.get("score") is not None]
-        avg_score = sum(scores)/len(scores) if scores else None
-        return {"llm_judge": {"avg_score": avg_score, "per_sample": results}}
+    def score_single(self, instruction, reference_answer, model_output):
+        """Meminta Gemini menilai output model"""
 
-    def _parse_score(self, text: str):
-        # simple numeric extractor, improve per prompt spec
-        import re
-        m = re.search(r"([0-9]+(?:\.[0-9]+)?)", text)
-        if m:
-            val = float(m.group(1))
-            # normalize if user expects 0-1 or 0-100
-            if val > 1:
-                return val / 100.0
-            return val
-        return None
+        prompt = f"""
+{self.prompt_template}
+
+Instruction:
+{instruction}
+
+Reference (Ground Truth):
+{reference_answer}
+
+Model Output:
+{model_output}
+
+Score (1-5):
+"""
+
+        response = self.model.generate_content(prompt)
+
+        try:
+            score = float(response.text.strip())
+        except Exception:
+            score = 1.0   # fallback
+
+        return score
+
+    def compute(self, dataset):
+        """
+        dataset: list of dict {instruction, reference, output}
+        """
+        scores = []
+        for item in dataset:
+            score = self.score_single(
+                instruction=item["instruction"],
+                reference_answer=item["reference"],
+                model_output=item["output"]
+            )
+            scores.append(score)
+
+        return {
+            "llm_judge_avg": sum(scores) / len(scores),
+            "llm_judge_all_scores": scores
+        }
