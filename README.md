@@ -1,4 +1,17 @@
 # Evaluation-Matrix-for-LLM
+
+# SFT Evaluation Pipeline
+Repository ini berisi pipeline evaluasi otomatis untuk model SFT (Supervised Fine-Tuning).  
+Pipeline mencakup:
+
+- Inference dataset evaluasi
+- Perhitungan banyak metrik (Exact Match, F1, ROUGE-L, BERTScore, Format Validity)
+- Logging dan struktur konfigurasi YAML
+- Upload otomatis model + hasil evaluasi ke HuggingFace Hub
+
+---
+
+## 📦 Struktur Direktori
 your-eval-project/
 │
 ├── configs/
