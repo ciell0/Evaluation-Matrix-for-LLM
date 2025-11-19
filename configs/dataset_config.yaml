@@ -1,0 +1,15 @@
+# Dataset configuration file
+
+dataset:
+  test_file: "data/test.jsonl"
+  test_format: "jsonl"
+
+fields:
+  instruction_key: "instruction"
+  input_key: "input"
+  output_key: "output"     # ground truth
+  prediction_key: "prediction"  # generated result
+
+preprocessing:
+  strip_whitespace: true
+  normalize_unicode: true
